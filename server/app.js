@@ -24,6 +24,82 @@ app.get("/", (req, res) => {
   });
 });
 
+app.get("/posts", (req, res) => {
+  db.findAll()
+    .then((posts) => {
+      console.log(posts);
+      res.status(200);
+      res.json(posts);
+    })
+    .catch((error) => {
+      res.status(500);
+      res.json({
+        error: "Internal Server Error",
+      });
+    });
+});
+
+app.post("/posts", (req, res) => {
+  db.insert(req.body)
+    .then((newPost) => {
+      console.log(newPost);
+      res.status(201);
+      res.json(newPost);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+});
+
+app.get("/posts/:id", (req, res) => {
+  db.findById(req.params.id)
+    .then((post) => {
+      if (post) {
+        res.status(200);
+        res.json(post);
+        console.log(post);
+      } else {
+        res.status(404);
+        console.log("Not Found");
+      }
+    })
+    .catch((error) => {
+      res.status(500);
+      res.json({ error: "Internal Server Error" });
+    });
+});
+
+app.patch("/posts/:id", (req, res) => {
+  db.updateById(req.params.id, req.body)
+    .then((updatedPost) => {
+      if (updatedPost) {
+        res.status(200);
+        res.json(updatedPost);
+        console.log(updatedPost);
+      } else {
+        res.status(404);
+        console.log("Not Found");
+      }
+    })
+    .catch((error) => {
+      res.status(500);
+      res.json({ error: "Internal Server Error" });
+    });
+});
+
+app.delete("/posts/:id", (req, res) => {
+  db.deleteById(req.params.id)
+    .then((post) => {
+      console.log("deleted successfully");
+      res.status(200);
+      res.json(post);
+    })
+    .catch((error) => {
+      res.status(500);
+      res.json({ error: "Internal Server Error" });
+    });
+});
+
 /*
   We have to start the server. We make it listen on the port 4000
 
