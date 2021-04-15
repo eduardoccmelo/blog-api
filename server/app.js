@@ -1,5 +1,6 @@
 const express = require("express");
 const db = require("./lib/db");
+const cors = require("cors");
 
 /*
   We create an express app calling
@@ -13,6 +14,12 @@ const app = express();
   https://expressjs.com/en/guide/using-middleware.html
 */
 app.use(express.json());
+app.use(cors());
+app.use((req, res, next) => {
+  const { method, url } = req;
+  console.log(`${method} ${url}`);
+  next();
+});
 
 /*
   Endpoint to handle GET requests to the root URI "/"
