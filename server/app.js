@@ -109,13 +109,13 @@ app.delete("/posts/:id", (req, res) => {
     });
 });
 
-const { PORT } = process.env;
+const { PORT, MONGO_URL } = process.env;
 
 /*
   We have to start the server. We make it listen on the port 4000
 
 */
-mongoose.connect("mongodb://localhost/blogs", {
+mongoose.connect(MONGO_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
